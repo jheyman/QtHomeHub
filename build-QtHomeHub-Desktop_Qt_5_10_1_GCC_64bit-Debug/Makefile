@@ -50,9 +50,15 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../QtHomeHub/main.cpp qrc_qml.cpp
+SOURCES       = ../QtHomeHub/main.cpp \
+		../QtHomeHub/homehubmodel.cpp \
+		../QtHomeHub/imageprovider.cpp qrc_qml.cpp \
+		moc_homehubmodel.cpp
 OBJECTS       = main.o \
-		qrc_qml.o
+		homehubmodel.o \
+		imageprovider.o \
+		qrc_qml.o \
+		moc_homehubmodel.o
 DIST          = /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/common/unix.conf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/common/linux.conf \
@@ -216,6 +222,7 @@ DIST          = /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_pre.pr
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_post.prf \
+		../QtHomeHub/.qmake.stash \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -234,7 +241,10 @@ DIST          = /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_pre.pr
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/exceptions.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/yacc.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/lex.prf \
-		../QtHomeHub/QtHomeHub.pro  ../QtHomeHub/main.cpp
+		../QtHomeHub/QtHomeHub.pro ../QtHomeHub/homehubmodel.h \
+		../QtHomeHub/imageprovider.h ../QtHomeHub/main.cpp \
+		../QtHomeHub/homehubmodel.cpp \
+		../QtHomeHub/imageprovider.cpp
 QMAKE_TARGET  = QtHomeHub
 DESTDIR       = 
 TARGET        = QtHomeHub
@@ -409,6 +419,7 @@ Makefile: ../QtHomeHub/QtHomeHub.pro /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -598,6 +609,7 @@ Makefile: ../QtHomeHub/QtHomeHub.pro /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs
 /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/qt_config.prf:
 /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/toolchain.prf:
 /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/default_pre.prf:
@@ -639,7 +651,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtHomeHub/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -668,10 +681,9 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_qml.cpp
 qrc_qml.cpp: ../QtHomeHub/qml.qrc \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/bin/rcc \
-		../QtHomeHub/Page1Form.ui.qml \
-		../QtHomeHub/Page2Form.ui.qml \
-		../QtHomeHub/Page3Form.ui.qml \
-		../QtHomeHub/Page4Form.ui.qml \
+		../QtHomeHub/TodoTab.ui.qml \
+		../QtHomeHub/HomePageTab.ui.qml \
+		../QtHomeHub/HomeAutomationTab.ui.qml \
 		../QtHomeHub/qtquickcontrols2.conf \
 		../QtHomeHub/main.qml \
 		../QtHomeHub/main.qml
@@ -683,8 +695,126 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_homehubmodel.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_homehubmodel.cpp
+moc_homehubmodel.cpp: /home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QObject \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QString \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QUrl \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurlquery.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qset.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVector \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslConfiguration \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslerror.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcryptographichash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qssl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QFlags \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QMetaType \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPixmap \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimage.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qregion.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qline.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		../QtHomeHub/homehubmodel.h \
+		moc_predefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/bin/moc
+	/home/etabli/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/include -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork -I/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtHomeHub/homehubmodel.h -o moc_homehubmodel.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -695,7 +825,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
@@ -790,17 +920,351 @@ main.o: ../QtHomeHub/main.cpp /home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmllist.h \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetaobject.h \
 		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlerror.h \
-		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmldebug.h
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmldebug.h \
+		../QtHomeHub/homehubmodel.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QObject \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QString \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QUrl \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVector \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslConfiguration \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslerror.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcryptographichash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qssl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QFlags \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QMetaType \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPixmap \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimage.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qregion.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qline.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		../QtHomeHub/imageprovider.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/QQuickImageProvider \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qquickimageprovider.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qtquickglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qtquick-config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../QtHomeHub/main.cpp
+
+homehubmodel.o: ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/homehubmodel.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QObject \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QString \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QUrl \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurlquery.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qset.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVector \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslConfiguration \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslerror.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcryptographichash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qssl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QFlags \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QMetaType \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPixmap \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimage.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qregion.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qline.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QDebug \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QNetworkRequest \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QNetworkReply \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QIODevice \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QUrlQuery \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QJsonDocument \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qjsondocument.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/QImageReader \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimagereader.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qeventloop.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimageiohandler.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qplugin.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qjsonobject.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qfactoryinterface.h \
+		../QtHomeHub/imageprovider.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/QQuickImageProvider \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qquickimageprovider.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qtquickglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qtqmlglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qtqml-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qtquick-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlengine.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qjsengine.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qjsvalue.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqml.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlprivate.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlparserstatus.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlpropertyvaluesource.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmllist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetaobject.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlerror.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmldebug.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o homehubmodel.o ../QtHomeHub/homehubmodel.cpp
+
+imageprovider.o: ../QtHomeHub/imageprovider.cpp ../QtHomeHub/imageprovider.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/QQuickImageProvider \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qquickimageprovider.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qtquickglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qtqmlglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qflags.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qtqml-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQuick/qtquick-config.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimage.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstring.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qchar.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpair.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrect.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsize.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvector.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qregion.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qline.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlengine.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurlquery.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmap.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qset.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qjsengine.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qjsvalue.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqml.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlprivate.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlparserstatus.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlpropertyvaluesource.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmllist.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetaobject.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmlerror.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtQml/qqmldebug.h \
+		../QtHomeHub/homehubmodel.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QObject \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QSharedDataPointer \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QString \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QUrl \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVector \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslConfiguration \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslerror.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcryptographichash.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qssl.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QFlags \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QMetaType \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPixmap \
+		/home/etabli/Qt5.10.1/5.10.1/gcc_64/include/QtCore/QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o imageprovider.o ../QtHomeHub/imageprovider.cpp
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
+
+moc_homehubmodel.o: moc_homehubmodel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_homehubmodel.o moc_homehubmodel.cpp
 
 ####### Install
 
 install_target: first FORCE
 	@test -d $(INSTALL_ROOT)/home/pi || mkdir -p $(INSTALL_ROOT)/home/pi
-	-$(QINSTALL_PROGRAM) /home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub/QtHomeHub $(INSTALL_ROOT)/home/pi/QtHomeHub
+	-$(QINSTALL_PROGRAM) /home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/build-QtHomeHub-Desktop_Qt_5_10_1_GCC_64bit-Debug/QtHomeHub $(INSTALL_ROOT)/home/pi/QtHomeHub
 
 uninstall_target: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/home/pi/QtHomeHub

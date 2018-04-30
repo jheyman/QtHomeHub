@@ -2,6 +2,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.VirtualKeyboard 2.3
 import QtQuick.VirtualKeyboard.Settings 2.2
+import HomeHub 1.0
 
 ApplicationWindow {
     id: window
@@ -10,23 +11,38 @@ ApplicationWindow {
     height: 480
     title: qsTr("Tabs")
 
+    HomeHubModel {
+        id: model
+    }
+
     SwipeView {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Page1Form {
+        HomePageTab {
+            id: page1
+            theText: model.homeHubStatus
+            photoSource: model.homeHubPhotoSource
+
+            // photo source is updated by the model when a new one has finished loading: cancel busy indicator then
+            onPhotoSourceChanged: pictureLoadingIndicator = false
+
+            // when picture area is touched, reload a fresh image
+            imgclickregion.onPressed: {
+                // show busy indicator
+                pictureLoadingIndicator = true
+                // call model to force a refresh of the picture (via an update of its source)
+                model.refreshPicture()
+            }
         }
 
-        Page2Form {
+
+        HomeAutomationTab {
         }
 
-        Page3Form {
+        TodoTab {
         }
-
-        Page4Form {
-        }
-
     }
 
     footer: TabBar {
@@ -34,16 +50,13 @@ ApplicationWindow {
         currentIndex: swipeView.currentIndex
 
         TabButton {
+            text: qsTr("Général")
+        }
+        TabButton {
             text: qsTr("Domotique")
         }
         TabButton {
-            text: qsTr("Meteo")
-        }
-        TabButton {
             text: qsTr("Todo")
-        }
-        TabButton {
-            text: qsTr("Photos")
         }
     }
 
