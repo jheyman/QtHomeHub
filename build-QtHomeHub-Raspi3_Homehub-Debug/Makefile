@@ -612,12 +612,29 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_qml.cpp
 qrc_qml.cpp: ../QtHomeHub/qml.qrc \
 		/home/etabli/raspi/qt5/bin/rcc \
+		../QtHomeHub/BigForecastIcon.qml \
 		../QtHomeHub/TodoTab.ui.qml \
 		../QtHomeHub/HomePageTab.ui.qml \
 		../QtHomeHub/HomeAutomationTab.ui.qml \
+		../QtHomeHub/ForecastIcon.qml \
+		../QtHomeHub/WeatherIcon.qml \
 		../QtHomeHub/qtquickcontrols2.conf \
 		../QtHomeHub/main.qml \
-		../QtHomeHub/main.qml
+		../QtHomeHub/main.qml \
+		../QtHomeHub/icons/weather-sleet.png \
+		../QtHomeHub/icons/weather-unknown.png \
+		../QtHomeHub/icons/weather-overcast.png \
+		../QtHomeHub/icons/weather-storm.png \
+		../QtHomeHub/icons/weather-thundershower.png \
+		../QtHomeHub/icons/weather-icy.png \
+		../QtHomeHub/icons/weather-showers.png \
+		../QtHomeHub/icons/weather-fog.png \
+		../QtHomeHub/icons/weather-sunny-very-few-clouds.png \
+		../QtHomeHub/icons/README.txt \
+		../QtHomeHub/icons/weather-haze.png \
+		../QtHomeHub/icons/weather-few-clouds.png \
+		../QtHomeHub/icons/weather-snow.png \
+		../QtHomeHub/icons/weather-sunny.png
 	/home/etabli/raspi/qt5/bin/rcc -name qml ../QtHomeHub/qml.qrc -o qrc_qml.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -741,6 +758,9 @@ moc_homehubmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5pi/include/QtCore/qdatastream.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qline.h \
 		/home/etabli/raspi/qt5pi/include/QtGui/qpainterpath.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QTimer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtimer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasictimer.h \
 		../QtHomeHub/homehubmodel.h \
 		moc_predefs.h \
 		/home/etabli/raspi/qt5/bin/moc
@@ -893,6 +913,9 @@ main.o: ../QtHomeHub/main.cpp /home/etabli/raspi/qt5pi/include/QtGui/QGuiApplica
 		/home/etabli/raspi/qt5pi/include/QtCore/qdatastream.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qline.h \
 		/home/etabli/raspi/qt5pi/include/QtGui/qpainterpath.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QTimer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtimer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasictimer.h \
 		../QtHomeHub/imageprovider.h \
 		/home/etabli/raspi/qt5pi/include/QtQuick/QQuickImageProvider \
 		/home/etabli/raspi/qt5pi/include/QtQuick/qquickimageprovider.h \
@@ -1013,6 +1036,9 @@ homehubmodel.o: ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/homehubmodel.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qdatastream.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qline.h \
 		/home/etabli/raspi/qt5pi/include/QtGui/qpainterpath.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QTimer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtimer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasictimer.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QDebug \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
@@ -1031,6 +1057,11 @@ homehubmodel.o: ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/homehubmodel.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qpointer.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qjsonobject.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qfactoryinterface.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonArray \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonarray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QElapsedTimer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qelapsedtimer.h \
 		../QtHomeHub/imageprovider.h \
 		/home/etabli/raspi/qt5pi/include/QtQuick/QQuickImageProvider \
 		/home/etabli/raspi/qt5pi/include/QtQuick/qquickimageprovider.h \
@@ -1182,6 +1213,9 @@ imageprovider.o: ../QtHomeHub/imageprovider.cpp ../QtHomeHub/imageprovider.h \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType \
 		/home/etabli/raspi/qt5pi/include/QtGui/QPixmap \
+		/home/etabli/raspi/qt5pi/include/QtCore/QTimer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtimer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasictimer.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o imageprovider.o ../QtHomeHub/imageprovider.cpp
 

@@ -21,6 +21,9 @@ ApplicationWindow {
         currentIndex: tabBar.currentIndex
 
         HomePageTab {
+            //////////////////////////
+            // PHOTOFRAME-related data
+            //////////////////////////
             photoSource: model.homeHubPhotoSource
 
             // photo source is updated by the model when a new one has finished loading: cancel busy indicator then
@@ -33,6 +36,29 @@ ApplicationWindow {
                 // call model to force a refresh of the picture (via an update of its source)
                 model.refreshPicture()
             }
+
+            //////////////////////////
+            // WEATHER-related data
+            //////////////////////////
+            currentWeatherIcon: (model.hasValidWeather ? model.currentWeather.weatherIcon : "00")
+            currentWeatherTemperature: (model.hasValidWeather ? model.currentWeather.temperature : "??")
+            currentWeatherDescription:(model.hasValidWeather ? model.currentWeather.weatherDescription : "No weather data")
+
+            forecast1WeatherIcon: (model.hasValidWeather ? model.forecast1Weather.weatherIcon : "00")
+            forecast1WeatherTemperature: (model.hasValidWeather ? model.forecast1Weather.dayOfWeek : "??")
+            forecast1WeatherDescription: (model.hasValidWeather ? model.forecast1Weather.temperature : "??/??")
+
+            forecast2WeatherIcon:(model.hasValidWeather ? model.forecast2Weather.weatherIcon : "00")
+            forecast2eatherTemperature: (model.hasValidWeather ? model.forecast2Weather.dayOfWeek : "??")
+            forecast2WeatherDescription: (model.hasValidWeather ? model.forecast2Weather.temperature : "??/??")
+
+            forecast3WeatherIcon:(model.hasValidWeather ? model.forecast3Weather.weatherIcon : "00")
+            forecast3WeatherTemperature: (model.hasValidWeather ? model.forecast3Weather.dayOfWeek : "??")
+            forecast3WeatherDescription: (model.hasValidWeather ? model.forecast3Weather.temperature : "??/??")
+
+            forecast4WeatherIcon:(model.hasValidWeather ? model.forecast4Weather.weatherIcon : "00")
+            forecast4WeatherTemperature: (model.hasValidWeather ? model.forecast4Weather.dayOfWeek : "??")
+            forecast4WeatherDescription: (model.hasValidWeather ? model.forecast4Weather.temperature : "??/??")
         }
 
 
