@@ -21,8 +21,6 @@ ApplicationWindow {
         currentIndex: tabBar.currentIndex
 
         HomePageTab {
-            id: page1
-            theText: model.homeHubStatus
             photoSource: model.homeHubPhotoSource
 
             // photo source is updated by the model when a new one has finished loading: cancel busy indicator then
