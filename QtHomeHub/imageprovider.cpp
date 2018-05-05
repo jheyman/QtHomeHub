@@ -28,7 +28,7 @@ QPixmap ImageProvider::requestPixmap(const QString &id, QSize *size, const QSize
              ret_pixmap = source->getPhoto();
         }
         else
-            qDebug()<<"NULL source";
+            qCritical()<<"NULL source";
 
         width = ret_pixmap.width();
         height = ret_pixmap.height();

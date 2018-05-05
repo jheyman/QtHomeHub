@@ -52,13 +52,21 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../QtHomeHub/main.cpp \
 		../QtHomeHub/homehubmodel.cpp \
-		../QtHomeHub/imageprovider.cpp qrc_qml.cpp \
-		moc_homehubmodel.cpp
+		../QtHomeHub/imageprovider.cpp \
+		../QtHomeHub/todomodel.cpp \
+		../QtHomeHub/todolist.cpp qrc_qml.cpp \
+		moc_homehubmodel.cpp \
+		moc_todomodel.cpp \
+		moc_todolist.cpp
 OBJECTS       = main.o \
 		homehubmodel.o \
 		imageprovider.o \
+		todomodel.o \
+		todolist.o \
 		qrc_qml.o \
-		moc_homehubmodel.o
+		moc_homehubmodel.o \
+		moc_todomodel.o \
+		moc_todolist.o
 DIST          = /home/etabli/raspi/qt5/mkspecs/features/spec_pre.prf \
 		/home/etabli/raspi/qt5/mkspecs/common/unix.conf \
 		/home/etabli/raspi/qt5/mkspecs/common/linux.conf \
@@ -219,9 +227,13 @@ DIST          = /home/etabli/raspi/qt5/mkspecs/features/spec_pre.prf \
 		/home/etabli/raspi/qt5/mkspecs/features/yacc.prf \
 		/home/etabli/raspi/qt5/mkspecs/features/lex.prf \
 		../QtHomeHub/QtHomeHub.pro ../QtHomeHub/homehubmodel.h \
-		../QtHomeHub/imageprovider.h ../QtHomeHub/main.cpp \
+		../QtHomeHub/imageprovider.h \
+		../QtHomeHub/todomodel.h \
+		../QtHomeHub/todolist.h ../QtHomeHub/main.cpp \
 		../QtHomeHub/homehubmodel.cpp \
-		../QtHomeHub/imageprovider.cpp
+		../QtHomeHub/imageprovider.cpp \
+		../QtHomeHub/todomodel.cpp \
+		../QtHomeHub/todolist.cpp
 QMAKE_TARGET  = QtHomeHub
 DESTDIR       = 
 TARGET        = QtHomeHub
@@ -582,8 +594,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtHomeHub/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h ../QtHomeHub/todomodel.h ../QtHomeHub/todolist.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp ../QtHomeHub/todomodel.cpp ../QtHomeHub/todolist.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -619,6 +631,7 @@ qrc_qml.cpp: ../QtHomeHub/qml.qrc \
 		../QtHomeHub/ForecastIcon.qml \
 		../QtHomeHub/WeatherIcon.qml \
 		../QtHomeHub/qtquickcontrols2.conf \
+		../QtHomeHub/ToDoList.qml \
 		../QtHomeHub/main.qml \
 		../QtHomeHub/main.qml \
 		../QtHomeHub/icons/weather-sleet.png \
@@ -643,9 +656,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp
 	/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++ -march=armv8-a -mtune=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard --sysroot=/home/etabli/raspi/sysroot -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_homehubmodel.cpp
+compiler_moc_header_make_all: moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_homehubmodel.cpp
+	-$(DEL_FILE) moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp
 moc_homehubmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
@@ -766,6 +779,175 @@ moc_homehubmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5/bin/moc
 	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/homehubmodel.h -o moc_homehubmodel.cpp
 
+moc_todomodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QAbstractListModel \
+		/home/etabli/raspi/qt5pi/include/QtCore/qabstractitemmodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		../QtHomeHub/todomodel.h \
+		moc_predefs.h \
+		/home/etabli/raspi/qt5/bin/moc
+	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/todomodel.h -o moc_todomodel.cpp
+
+moc_todolist.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QString \
+		/home/etabli/raspi/qt5pi/include/QtCore/QUrl \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurlquery.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslerror.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcryptographichash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdatetime.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qssl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QFlags \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType \
+		../QtHomeHub/todolist.h \
+		moc_predefs.h \
+		/home/etabli/raspi/qt5/bin/moc
+	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/todolist.h -o moc_todolist.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -872,16 +1054,22 @@ main.o: ../QtHomeHub/main.cpp /home/etabli/raspi/qt5pi/include/QtGui/QGuiApplica
 		/home/etabli/raspi/qt5pi/include/QtCore/qmetaobject.h \
 		/home/etabli/raspi/qt5pi/include/QtQml/qqmlerror.h \
 		/home/etabli/raspi/qt5pi/include/QtQml/qqmldebug.h \
-		../QtHomeHub/homehubmodel.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/QQmlContext \
+		/home/etabli/raspi/qt5pi/include/QtQml/qqmlcontext.h \
+		../QtHomeHub/todolist.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
-		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
-		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
 		/home/etabli/raspi/qt5pi/include/QtCore/QString \
 		/home/etabli/raspi/qt5pi/include/QtCore/QUrl \
 		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
-		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
@@ -896,6 +1084,10 @@ main.o: ../QtHomeHub/main.cpp /home/etabli/raspi/qt5pi/include/QtGui/QGuiApplica
 		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
 		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType \
+		../QtHomeHub/todomodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QAbstractListModel \
+		/home/etabli/raspi/qt5pi/include/QtCore/qabstractitemmodel.h \
+		../QtHomeHub/homehubmodel.h \
 		/home/etabli/raspi/qt5pi/include/QtGui/QPixmap \
 		/home/etabli/raspi/qt5pi/include/QtGui/qpixmap.h \
 		/home/etabli/raspi/qt5pi/include/QtGui/qpaintdevice.h \
@@ -1219,11 +1411,218 @@ imageprovider.o: ../QtHomeHub/imageprovider.cpp ../QtHomeHub/imageprovider.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o imageprovider.o ../QtHomeHub/imageprovider.cpp
 
+todomodel.o: ../QtHomeHub/todomodel.cpp ../QtHomeHub/todomodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QAbstractListModel \
+		/home/etabli/raspi/qt5pi/include/QtCore/qabstractitemmodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		../QtHomeHub/todolist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
+		/home/etabli/raspi/qt5pi/include/QtCore/QString \
+		/home/etabli/raspi/qt5pi/include/QtCore/QUrl \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurlquery.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslerror.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcryptographichash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdatetime.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qssl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QFlags \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o todomodel.o ../QtHomeHub/todomodel.cpp
+
+todolist.o: ../QtHomeHub/todolist.cpp /home/etabli/raspi/qt5pi/include/QtCore/QUrl \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurlquery.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QUrlQuery \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonDocument \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsondocument.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonvalue.h \
+		../QtHomeHub/todolist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
+		/home/etabli/raspi/qt5pi/include/QtCore/QString \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslerror.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcryptographichash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdatetime.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qssl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QFlags \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o todolist.o ../QtHomeHub/todolist.cpp
+
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
 
 moc_homehubmodel.o: moc_homehubmodel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_homehubmodel.o moc_homehubmodel.cpp
+
+moc_todomodel.o: moc_todomodel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_todomodel.o moc_todomodel.cpp
+
+moc_todolist.o: moc_todolist.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_todolist.o moc_todolist.cpp
 
 ####### Install
 

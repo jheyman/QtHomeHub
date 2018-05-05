@@ -60,6 +60,10 @@ class HomeHubModel : public QObject
                READ homeHubPhotoSource
                NOTIFY homeHubPhotoSourceChanged)
 
+    Q_PROPERTY(QString homeHubPhotoPathName
+               READ homeHubPhotoPathName
+               NOTIFY homeHubPhotoPathNameChanged)
+
     // WEATHER data
     Q_PROPERTY(bool hasValidWeather
                READ hasValidWeather
@@ -89,6 +93,7 @@ public:
 
     // PHOTOFRAME
     QString homeHubPhotoSource() const;
+    QString homeHubPhotoPathName() const;
     QPixmap getPhoto() { return m_photo;}
 
     // WEATHER
@@ -106,6 +111,7 @@ private:
 
     // PHOTOFRAME
     QString m_homeHubPhotoSource="image://imageProvider/emptypic";
+    QString m_homeHubPhotoPathName="(uninitalized)";
     QPixmap m_photo;
     QString m_photoPath;
     int m_photoWidth;
@@ -130,9 +136,11 @@ private:
     //QString m_app_ident = QStringLiteral("2dee82fd5d7326c51ceb0d4b8a42e2ff"); // FAKE to test ERROR
 
 signals:
-    // PHOTOFRAME
     void homeHubStatusChanged();
+
+    // PHOTOFRAME
     void homeHubPhotoSourceChanged();
+    void homeHubPhotoPathNameChanged();
 
     // WEATHER
     void weatherChanged();

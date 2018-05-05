@@ -14,7 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     homehubmodel.cpp \
-    imageprovider.cpp
+    imageprovider.cpp \
+    todomodel.cpp \
+    todolist.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,4 +37,6 @@ target.path     = /home/pi
 
 HEADERS += \
     homehubmodel.h \
-    imageprovider.h
+    imageprovider.h \
+    todomodel.h \
+    todolist.h

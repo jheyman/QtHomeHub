@@ -11,6 +11,12 @@ Page {
         padding: 10
     }
 
+    TextField {
+        id: text1
+        onEditingFinished: focus = false
+        anchors.bottom: parent.bottom
+    }
+
     Label {
         text: qsTr("You are on Page 3.")
         anchors.centerIn: parent

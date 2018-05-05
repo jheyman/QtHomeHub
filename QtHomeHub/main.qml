@@ -25,6 +25,7 @@ ApplicationWindow {
             // PHOTOFRAME-related data
             //////////////////////////
             photoSource: model.homeHubPhotoSource
+            photoPathName: model.homeHubPhotoPathName
 
             // photo source is updated by the model when a new one has finished loading: cancel busy indicator then
             onPhotoSourceChanged: pictureLoadingIndicator = false
@@ -93,6 +94,7 @@ ApplicationWindow {
 
         Component.onCompleted: {
             VirtualKeyboardSettings.locale = "fr_FR";
+            VirtualKeyboardSettings.fullScreenMode = true;
         }
 
         states: State {
@@ -116,4 +118,5 @@ ApplicationWindow {
             }
         }
     }
+
 }

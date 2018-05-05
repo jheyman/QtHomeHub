@@ -23,5 +23,6 @@
         <file>icons/weather-sunny.png</file>
         <file>icons/weather-thundershower.png</file>
         <file>icons/weather-unknown.png</file>
+        <file>ToDoList.qml</file>
     </qresource>
 </RCC>

@@ -16,6 +16,7 @@
 #include <imageprovider.h>
 
 #define ZERO_KELVIN 273.15
+#define PHOTO_BASE_PATH "/mnt/photo"
 
 WeatherData::WeatherData(QObject *parent) :
         QObject(parent)
@@ -109,7 +110,7 @@ void HomeHubModel::requestRandomImagePath()
 {
     QUrl url("http://192.168.0.13:8081/getRandomImagePath.php");
     QUrlQuery query;
-    query.addQueryItem("basepath", "/mnt/photo");
+    query.addQueryItem("basepath", PHOTO_BASE_PATH);
     url.setQuery(query);
 
     QNetworkReply *rep = m_networkAccessManager.get(QNetworkRequest(url));
@@ -144,10 +145,15 @@ QString HomeHubModel::homeHubPhotoSource() const
     return m_homeHubPhotoSource;
 }
 
+QString HomeHubModel::homeHubPhotoPathName() const
+{
+    return m_homeHubPhotoPathName;
+}
+
 void HomeHubModel::handleRandomImagePathReception(QNetworkReply *networkReply)
 {
     if (!networkReply) {
-        qDebug()<<"ERROR in handleRandomImagePathReception : null reply";
+        qCritical()<<"ERROR in handleRandomImagePathReception : null reply";
         return;
     }
 
@@ -173,7 +179,7 @@ void HomeHubModel::handleRandomImagePathReception(QNetworkReply *networkReply)
         requestSelectedImage(m_photoPath);
 
     } else {
-        qDebug()<<"ERROR in handleRandomImagePathReception : reply error";
+        qCritical()<<"ERROR in handleRandomImagePathReception : reply error";
     }
     networkReply->deleteLater();
 }
@@ -181,7 +187,7 @@ void HomeHubModel::handleRandomImagePathReception(QNetworkReply *networkReply)
 void HomeHubModel::handleSelectedImageReception(QNetworkReply *networkReply)
 {
     if (!networkReply) {
-        qDebug()<<"ERROR in handleSelectedImageReception : null reply";
+        qCritical()<<"ERROR in handleSelectedImageReception : null reply";
         return;
     }
 
@@ -222,8 +228,13 @@ void HomeHubModel::handleSelectedImageReception(QNetworkReply *networkReply)
         m_homeHubPhotoSource = "image://imageProvider"+m_photoPath;
         emit homeHubPhotoSourceChanged();
 
+        // update and & notify the image pathname property itself
+        m_homeHubPhotoPathName = m_photoPath.remove(QString(PHOTO_BASE_PATH)+"/");
+        emit homeHubPhotoPathNameChanged();
+
+
     } else {
-        qDebug()<<"ERROR in handleSelectedImageReception : reply error";
+        qCritical()<<"ERROR in handleSelectedImageReception : reply error";
     }
     networkReply->deleteLater();
 }
@@ -276,9 +287,9 @@ void HomeHubModel::handleWeatherNetworkData(QNetworkReply *networkReply)
                 val = weatherArray.at(0);
                 tempObject = val.toObject();
                 m_now.setWeatherDescription(tempObject.value(QStringLiteral("description")).toString());
-                qDebug()<<"current weather: "<<"desc="<<tempObject.value(QStringLiteral("description")).toString();
+                //qDebug()<<"current weather: "<<"desc="<<tempObject.value(QStringLiteral("description")).toString();
                 m_now.setWeatherIcon(tempObject.value("icon").toString());
-                qDebug()<<"current weather: "<<"icon="<<tempObject.value("icon").toString();
+                //qDebug()<<"current weather: "<<"icon="<<tempObject.value("icon").toString();
 
             }
             if (obj.contains(QStringLiteral("main"))) {
@@ -286,7 +297,7 @@ void HomeHubModel::handleWeatherNetworkData(QNetworkReply *networkReply)
                 tempObject = val.toObject();
                 val = tempObject.value(QStringLiteral("temp"));
                 m_now.setTemperature(niceTemperatureString(val.toDouble()));
-                qDebug()<<"current weather: "<<"temp="<<niceTemperatureString(val.toDouble());
+                //qDebug()<<"current weather: "<<"temp="<<niceTemperatureString(val.toDouble());
 
             }
         }
@@ -360,7 +371,7 @@ void HomeHubModel::handleForecastNetworkData(QNetworkReply *networkReply)
             data += niceTemperatureString(jv.toDouble());
             forecastEntry->setTemperature(data);
 
-            qDebug()<<"forecast "<<i<<", temp="<<data;
+            //qDebug()<<"forecast "<<i<<", temp="<<data;
 
             //get date
             jv = subtree.value(QStringLiteral("dt"));
@@ -371,14 +382,14 @@ void HomeHubModel::handleForecastNetworkData(QNetworkReply *networkReply)
             QString frenchDate = locale.toString(date, "ddd");
             forecastEntry->setDayOfWeek(frenchDate);
 
-            qDebug()<<"forecast "<<i<<", day="<<frenchDate;
+            //qDebug()<<"forecast "<<i<<", day="<<frenchDate;
 
             //get icon
             QJsonArray weatherArray = subtree.value(QStringLiteral("weather")).toArray();
             jo = weatherArray.at(0).toObject();
             forecastEntry->setWeatherIcon(jo.value(QStringLiteral("icon")).toString());
 
-            qDebug()<<"forecast "<<i<<", icon="<<jo.value(QStringLiteral("icon")).toString();
+            //qDebug()<<"forecast "<<i<<", icon="<<jo.value(QStringLiteral("icon")).toString();
 
             //get description
             forecastEntry->setWeatherDescription(jo.value(QStringLiteral("description")).toString());

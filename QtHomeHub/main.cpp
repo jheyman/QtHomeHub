@@ -1,5 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+
+#include "todolist.h"
+#include "todomodel.h"
 #include <homehubmodel.h>
 #include <imageprovider.h>
 
@@ -37,8 +41,15 @@ int main(int argc, char *argv[])
     qmlRegisterType<WeatherData>("WeatherInfo", 1, 0, "WeatherData");
     qmlRegisterType<HomeHubModel>("HomeHub", 1, 0, "HomeHubModel");
 
+    qmlRegisterType<ToDoModel>("ToDo", 1, 0, "ToDoModel");
+    qmlRegisterUncreatableType<ToDoList>("ToDo", 1, 0, "ToDoList",
+           QStringLiteral("ToDoList should not be created in QML"));
+
+    ToDoList toDoList;
+
     QQmlApplicationEngine engine;
     engine.addImageProvider(QLatin1String("imageProvider"), new ImageProvider);
+    engine.rootContext()->setContextProperty(QStringLiteral("toDoList"), &toDoList);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
