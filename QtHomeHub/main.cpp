@@ -4,8 +4,10 @@
 
 #include "todolist.h"
 #include "todomodel.h"
-#include <homehubmodel.h>
-#include <imageprovider.h>
+#include "shoppinglist.h"
+#include "shoppingmodel.h"
+#include "homehubmodel.h"
+#include "imageprovider.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -47,9 +49,16 @@ int main(int argc, char *argv[])
 
     ToDoList toDoList;
 
+    qmlRegisterType<ShoppingModel>("Shopping", 1, 0, "ShoppingModel");
+    qmlRegisterUncreatableType<ShoppingList>("Shopping", 1, 0, "ShoppingList",
+           QStringLiteral("ShoppingList should not be created in QML"));
+
+    ShoppingList shoppingList;
+
     QQmlApplicationEngine engine;
     engine.addImageProvider(QLatin1String("imageProvider"), new ImageProvider);
     engine.rootContext()->setContextProperty(QStringLiteral("toDoList"), &toDoList);
+    engine.rootContext()->setContextProperty(QStringLiteral("shoppingList"), &shoppingList);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

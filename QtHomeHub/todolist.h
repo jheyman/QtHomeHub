@@ -40,7 +40,6 @@ private:
 
 private slots:
     void handleTodoData(QNetworkReply *networkReply);
-
 };
 
 #endif // TODOLIST_H

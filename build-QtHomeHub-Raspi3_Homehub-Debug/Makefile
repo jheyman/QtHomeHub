@@ -54,19 +54,27 @@ SOURCES       = ../QtHomeHub/main.cpp \
 		../QtHomeHub/homehubmodel.cpp \
 		../QtHomeHub/imageprovider.cpp \
 		../QtHomeHub/todomodel.cpp \
-		../QtHomeHub/todolist.cpp qrc_qml.cpp \
+		../QtHomeHub/todolist.cpp \
+		../QtHomeHub/shoppinglist.cpp \
+		../QtHomeHub/shoppingmodel.cpp qrc_qml.cpp \
 		moc_homehubmodel.cpp \
 		moc_todomodel.cpp \
-		moc_todolist.cpp
+		moc_todolist.cpp \
+		moc_shoppinglist.cpp \
+		moc_shoppingmodel.cpp
 OBJECTS       = main.o \
 		homehubmodel.o \
 		imageprovider.o \
 		todomodel.o \
 		todolist.o \
+		shoppinglist.o \
+		shoppingmodel.o \
 		qrc_qml.o \
 		moc_homehubmodel.o \
 		moc_todomodel.o \
-		moc_todolist.o
+		moc_todolist.o \
+		moc_shoppinglist.o \
+		moc_shoppingmodel.o
 DIST          = /home/etabli/raspi/qt5/mkspecs/features/spec_pre.prf \
 		/home/etabli/raspi/qt5/mkspecs/common/unix.conf \
 		/home/etabli/raspi/qt5/mkspecs/common/linux.conf \
@@ -229,11 +237,15 @@ DIST          = /home/etabli/raspi/qt5/mkspecs/features/spec_pre.prf \
 		../QtHomeHub/QtHomeHub.pro ../QtHomeHub/homehubmodel.h \
 		../QtHomeHub/imageprovider.h \
 		../QtHomeHub/todomodel.h \
-		../QtHomeHub/todolist.h ../QtHomeHub/main.cpp \
+		../QtHomeHub/todolist.h \
+		../QtHomeHub/shoppinglist.h \
+		../QtHomeHub/shoppingmodel.h ../QtHomeHub/main.cpp \
 		../QtHomeHub/homehubmodel.cpp \
 		../QtHomeHub/imageprovider.cpp \
 		../QtHomeHub/todomodel.cpp \
-		../QtHomeHub/todolist.cpp
+		../QtHomeHub/todolist.cpp \
+		../QtHomeHub/shoppinglist.cpp \
+		../QtHomeHub/shoppingmodel.cpp
 QMAKE_TARGET  = QtHomeHub
 DESTDIR       = 
 TARGET        = QtHomeHub
@@ -594,8 +606,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtHomeHub/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h ../QtHomeHub/todomodel.h ../QtHomeHub/todolist.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp ../QtHomeHub/todomodel.cpp ../QtHomeHub/todolist.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h ../QtHomeHub/todomodel.h ../QtHomeHub/todolist.h ../QtHomeHub/shoppinglist.h ../QtHomeHub/shoppingmodel.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp ../QtHomeHub/todomodel.cpp ../QtHomeHub/todolist.cpp ../QtHomeHub/shoppinglist.cpp ../QtHomeHub/shoppingmodel.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -627,6 +639,7 @@ qrc_qml.cpp: ../QtHomeHub/qml.qrc \
 		../QtHomeHub/BigForecastIcon.qml \
 		../QtHomeHub/TodoTab.ui.qml \
 		../QtHomeHub/HomePageTab.ui.qml \
+		../QtHomeHub/ShoppingList.qml \
 		../QtHomeHub/HomeAutomationTab.ui.qml \
 		../QtHomeHub/ForecastIcon.qml \
 		../QtHomeHub/WeatherIcon.qml \
@@ -634,6 +647,8 @@ qrc_qml.cpp: ../QtHomeHub/qml.qrc \
 		../QtHomeHub/ToDoList.qml \
 		../QtHomeHub/main.qml \
 		../QtHomeHub/main.qml \
+		../QtHomeHub/images/delete-button.svg \
+		../QtHomeHub/images/add-button.svg \
 		../QtHomeHub/icons/weather-sleet.png \
 		../QtHomeHub/icons/weather-unknown.png \
 		../QtHomeHub/icons/weather-overcast.png \
@@ -647,7 +662,258 @@ qrc_qml.cpp: ../QtHomeHub/qml.qrc \
 		../QtHomeHub/icons/weather-haze.png \
 		../QtHomeHub/icons/weather-few-clouds.png \
 		../QtHomeHub/icons/weather-snow.png \
-		../QtHomeHub/icons/weather-sunny.png
+		../QtHomeHub/icons/weather-sunny.png \
+		../QtHomeHub/icons/tick_iconset/tick_fog_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy1_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow5.png \
+		../QtHomeHub/icons/tick_iconset/tick_sunny_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy5.png \
+		../QtHomeHub/icons/tick_iconset/tick_shower3.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow3_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_mist.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow4.png \
+		../QtHomeHub/icons/tick_iconset/tick_sleet.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow2_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_overcast.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy4.png \
+		../QtHomeHub/icons/tick_iconset/tick_shower1_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_shower2.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow3.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy3.png \
+		../QtHomeHub/icons/tick_iconset/tick_shower1.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow2.png \
+		../QtHomeHub/icons/tick_iconset/tick_sunny.png \
+		../QtHomeHub/icons/tick_iconset/tick_mist_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_tstorm3.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy2.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy3_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow1.png \
+		../QtHomeHub/icons/tick_iconset/tick_light_rain.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy2_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_tstorm2.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy1.png \
+		../QtHomeHub/icons/tick_iconset/tick_tstorm1.png \
+		../QtHomeHub/icons/tick_iconset/tick_fog.png \
+		../QtHomeHub/icons/tick_iconset/tick_shower2_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_snow1_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_dunno.png \
+		../QtHomeHub/icons/tick_iconset/tick_hail.png \
+		../QtHomeHub/icons/tick_iconset/tick_tstorm2_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_tstorm1_night.png \
+		../QtHomeHub/icons/tick_iconset/tick_cloudy4_night.png \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-first-quarter.svg \
+		../QtHomeHub/icons/erikflowers/wi-refresh.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-cloudy-windy.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-12.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-crescent-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-new.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-first-quarter.svg \
+		../QtHomeHub/icons/erikflowers/wi-alien.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-sprinkle.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-10.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-sprinkle.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-crescent-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-fog.svg \
+		../QtHomeHub/icons/erikflowers/wi-sunrise.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-partly-cloudy.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-cloudy-gusts.svg \
+		../QtHomeHub/icons/erikflowers/wi-raindrops.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-full.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-haze.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-rain-mix.svg \
+		../QtHomeHub/icons/erikflowers/wi-lunar-eclipse.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-snow-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-rain-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-left.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-sunny-overcast.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloud-up.svg \
+		../QtHomeHub/icons/erikflowers/wi-na.svg \
+		../QtHomeHub/icons/erikflowers/wi-fire.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-snow-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-new.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-windy.svg \
+		../QtHomeHub/icons/erikflowers/wi-celsius.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-up.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-gibbous-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-train.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-storm-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-crescent-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-0.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-down.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-rain.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-gibbous-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-rain-mix.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-rain-mix.svg \
+		../QtHomeHub/icons/erikflowers/wi-thermometer-exterior.svg \
+		../QtHomeHub/icons/erikflowers/wi-thermometer-internal.svg \
+		../QtHomeHub/icons/erikflowers/wi-sandstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-third-quarter.svg \
+		../QtHomeHub/icons/erikflowers/wi-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-sleet-storm.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-sleet.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-storm-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-crescent-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-gibbous-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-gibbous-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-light-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-cloudy-gusts.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-cloudy-high.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-crescent-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-hail.svg \
+		../QtHomeHub/icons/erikflowers/wi-hot.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-lightning.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-third-quarter.svg \
+		../QtHomeHub/icons/erikflowers/wi-storm-warning.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-gibbous-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-up-left.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-rain.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-crescent-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-storm-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-full.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-11.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-gibbous-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-sleet.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloudy-windy.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-crescent-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-fog.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloud-down.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-crescent-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-gibbous-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-rain.svg \
+		../QtHomeHub/icons/erikflowers/wi-sprinkle.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-9.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-gibbous-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-crescent-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-crescent-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-gibbous-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-crescent-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-snow.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-9.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-7.svg \
+		../QtHomeHub/icons/erikflowers/wi-meteor.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-down-right.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-crescent-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-barometer.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-up-right.svg \
+		../QtHomeHub/icons/erikflowers/wi-rain-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-windy.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-partly-cloudy.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-sleet-storm.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-cloudy.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-7.svg \
+		../QtHomeHub/icons/erikflowers/wi-moonrise.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-umbrella.svg \
+		../QtHomeHub/icons/erikflowers/wi-rain-mix.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-11.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-crescent-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-snow-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-raindrop.svg \
+		../QtHomeHub/icons/erikflowers/wi-tornado.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-hail.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-sleet.svg \
+		../QtHomeHub/icons/erikflowers/wi-strong-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-cloudy-high.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-snowflake-cold.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-clear.svg \
+		../QtHomeHub/icons/erikflowers/wi-degrees.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-cloudy.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloudy-gusts.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-snow-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-deg.svg \
+		../QtHomeHub/icons/erikflowers/wi-volcano.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-crescent-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-lightning.svg \
+		../QtHomeHub/icons/erikflowers/wi-solar-eclipse.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-sleet.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-gibbous-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-hurricane-warning.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-hail.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloud-refresh.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-rain-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-cloudy-windy.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-gibbous-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-snow.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-crescent-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-rain-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-smog.svg \
+		../QtHomeHub/icons/erikflowers/wi-flood.svg \
+		../QtHomeHub/icons/erikflowers/wi-gale-warning.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-gibbous-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-gibbous-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-earthquake.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-cloudy.svg \
+		../QtHomeHub/icons/erikflowers/wi-refresh-alt.svg \
+		../QtHomeHub/icons/erikflowers/wi-hail.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-gibbous-3.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-gibbous-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-crescent-6.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-snow-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-crescent-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloudy.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-12.svg \
+		../QtHomeHub/icons/erikflowers/wi-fog.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-down-left.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-gibbous-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-gibbous-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-cloud.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-cloudy-windy.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-crescent-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-smoke.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-snow.svg \
+		../QtHomeHub/icons/erikflowers/wi-fahrenheit.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-cloudy-high.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waxing-gibbous-1.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-storm-showers.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-gibbous-4.svg \
+		../QtHomeHub/icons/erikflowers/wi-sunset.svg \
+		../QtHomeHub/icons/erikflowers/wi-direction-right.svg \
+		../QtHomeHub/icons/erikflowers/wi-thermometer.svg \
+		../QtHomeHub/icons/erikflowers/wi-tsunami.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-10.svg \
+		../QtHomeHub/icons/erikflowers/wi-stars.svg \
+		../QtHomeHub/icons/erikflowers/wi-dust.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-gibbous-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-small-craft-advisory.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-lightning.svg \
+		../QtHomeHub/icons/erikflowers/wi-hurricane.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waxing-crescent-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-moonset.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-lightning.svg \
+		../QtHomeHub/icons/erikflowers/wi-humidity.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-sunny.svg \
+		../QtHomeHub/icons/erikflowers/wi-horizon-alt.svg \
+		../QtHomeHub/icons/erikflowers/wi-snow-wind.svg \
+		../QtHomeHub/icons/erikflowers/wi-snow.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-gibbous-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-waning-crescent-2.svg \
+		../QtHomeHub/icons/erikflowers/wi-wind-beaufort-8.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-rain.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-alt-snow-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-horizon.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-sleet-storm.svg \
+		../QtHomeHub/icons/erikflowers/wi-moon-alt-waning-crescent-5.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-sprinkle.svg \
+		../QtHomeHub/icons/erikflowers/wi-day-thunderstorm.svg \
+		../QtHomeHub/icons/erikflowers/wi-night-cloudy-gusts.svg \
+		../QtHomeHub/icons/erikflowers/wi-time-8.svg
 	/home/etabli/raspi/qt5/bin/rcc -name qml ../QtHomeHub/qml.qrc -o qrc_qml.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -656,9 +922,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp
 	/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++ -march=armv8-a -mtune=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard --sysroot=/home/etabli/raspi/sysroot -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp
+compiler_moc_header_make_all: moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp moc_shoppinglist.cpp moc_shoppingmodel.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp
+	-$(DEL_FILE) moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp moc_shoppinglist.cpp moc_shoppingmodel.cpp
 moc_homehubmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
@@ -948,6 +1214,175 @@ moc_todolist.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5/bin/moc
 	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/todolist.h -o moc_todolist.cpp
 
+moc_shoppinglist.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QString \
+		/home/etabli/raspi/qt5pi/include/QtCore/QUrl \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurlquery.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslerror.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcryptographichash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdatetime.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qssl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QFlags \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType \
+		../QtHomeHub/shoppinglist.h \
+		moc_predefs.h \
+		/home/etabli/raspi/qt5/bin/moc
+	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/shoppinglist.h -o moc_shoppinglist.cpp
+
+moc_shoppingmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QAbstractListModel \
+		/home/etabli/raspi/qt5pi/include/QtCore/qabstractitemmodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		../QtHomeHub/shoppingmodel.h \
+		moc_predefs.h \
+		/home/etabli/raspi/qt5/bin/moc
+	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/shoppingmodel.h -o moc_shoppingmodel.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -1087,6 +1522,8 @@ main.o: ../QtHomeHub/main.cpp /home/etabli/raspi/qt5pi/include/QtGui/QGuiApplica
 		../QtHomeHub/todomodel.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QAbstractListModel \
 		/home/etabli/raspi/qt5pi/include/QtCore/qabstractitemmodel.h \
+		../QtHomeHub/shoppinglist.h \
+		../QtHomeHub/shoppingmodel.h \
 		../QtHomeHub/homehubmodel.h \
 		/home/etabli/raspi/qt5pi/include/QtGui/QPixmap \
 		/home/etabli/raspi/qt5pi/include/QtGui/qpixmap.h \
@@ -1562,6 +1999,10 @@ todolist.o: ../QtHomeHub/todolist.cpp /home/etabli/raspi/qt5pi/include/QtCore/QU
 		/home/etabli/raspi/qt5pi/include/QtCore/QJsonDocument \
 		/home/etabli/raspi/qt5pi/include/QtCore/qjsondocument.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qjsonvalue.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonArray \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonarray.h \
 		../QtHomeHub/todolist.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
@@ -1612,6 +2053,211 @@ todolist.o: ../QtHomeHub/todolist.cpp /home/etabli/raspi/qt5pi/include/QtCore/QU
 		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o todolist.o ../QtHomeHub/todolist.cpp
 
+shoppinglist.o: ../QtHomeHub/shoppinglist.cpp /home/etabli/raspi/qt5pi/include/QtCore/QUrl \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurlquery.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QUrlQuery \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonDocument \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsondocument.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonvalue.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QJsonArray \
+		/home/etabli/raspi/qt5pi/include/QtCore/qjsonarray.h \
+		../QtHomeHub/shoppinglist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
+		/home/etabli/raspi/qt5pi/include/QtCore/QString \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslerror.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcryptographichash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdatetime.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qssl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QFlags \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shoppinglist.o ../QtHomeHub/shoppinglist.cpp
+
+shoppingmodel.o: ../QtHomeHub/shoppingmodel.cpp ../QtHomeHub/shoppingmodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QAbstractListModel \
+		/home/etabli/raspi/qt5pi/include/QtCore/qabstractitemmodel.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		../QtHomeHub/shoppinglist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVector \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkRequest \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkrequest.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QSharedDataPointer \
+		/home/etabli/raspi/qt5pi/include/QtCore/QString \
+		/home/etabli/raspi/qt5pi/include/QtCore/QUrl \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qurlquery.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QVariant \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkReply \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkreply.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QIODevice \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QNetworkAccessManager \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qnetworkaccessmanager.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslConfiguration \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslconfiguration.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtcpsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qabstractsocket.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslerror.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslcertificate.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcryptographichash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdatetime.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qssl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QFlags \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/QSslPreSharedKeyAuthenticator \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shoppingmodel.o ../QtHomeHub/shoppingmodel.cpp
+
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
 
@@ -1623,6 +2269,12 @@ moc_todomodel.o: moc_todomodel.cpp
 
 moc_todolist.o: moc_todolist.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_todolist.o moc_todolist.cpp
+
+moc_shoppinglist.o: moc_shoppinglist.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_shoppinglist.o moc_shoppinglist.cpp
+
+moc_shoppingmodel.o: moc_shoppingmodel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_shoppingmodel.o moc_shoppingmodel.cpp
 
 ####### Install
 

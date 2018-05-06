@@ -39,6 +39,8 @@ bool ToDoModel::setData(const QModelIndex &index, const QVariant &value, int rol
     if (!mList)
         return false;
 
+    qDebug()<<"setData: index="<<index<<", value="<<value<<", role="<<role;
+
     ToDoItem item = mList->items().at(index.row());
     switch (role) {
     case DoneRole:

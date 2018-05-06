@@ -49,6 +49,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 
 Item {
     id: container
@@ -58,8 +59,50 @@ Item {
     Image {
         id: img
         fillMode: Image.PreserveAspectFit
+        sourceSize.width: 256
+        sourceSize.height: 256
         source: {
             switch (weatherIcon) {
+            case "01d":
+            case "01n":
+                 "../icons/erikflowers/wi-day-sunny.svg"
+                break;
+            case "02d":
+            case "02n":
+                "../icons/erikflowers/wi-day-cloudy.svg"
+                break;
+            case "03d":
+            case "03n":
+                "../icons/erikflowerst/wi-cloud.svg"
+                break;
+            case "04d":
+            case "04n":
+                "../icons/erikflowers/wi-cloudy.svg"
+                break;
+            case "09d":
+            case "09n":
+                "../icons/erikflowers/wi-day-rain.svg"
+                break;
+            case "10d":
+            case "10n":
+                "../icons/erikflowers/wi-rain.svg"
+                break;
+            case "11d":
+            case "11n":
+                "../icons/erikflowers/wi-thunderstorm.svg"
+                break;
+            case "13d":
+            case "13n":
+                "../icons/erikflowers/wi-snow.svg"
+                break;
+            case "50d":
+            case "50n":
+                "../icons/erikflowers/wi-fog.svg"
+                break;
+            default:
+                "../icons/weather-unknown.png"
+            }
+         /*
             case "01d":
             case "01n":
                  "../icons/weather-sunny.png"
@@ -99,8 +142,17 @@ Item {
             default:
                 "../icons/weather-unknown.png"
             }
+            */
         }
         smooth: true
         anchors.fill: parent
     }
+
+    ColorOverlay{
+            anchors.fill: img
+            source:img
+            color:"pink"
+            //transform:rotation
+            antialiasing: true
+        }
 }

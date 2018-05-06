@@ -8,30 +8,54 @@ import QtQuick.VirtualKeyboard.Settings 2.2
 import ToDo 1.0
 
 ColumnLayout {
-    Text {
-        id: todotitre
-        text: "A faire"
-        horizontalAlignment: Text.AlignHCenter
-        color: "white"
-        font.pointSize: 20
+
+    RowLayout {
         Layout.fillWidth: true
-        Layout.preferredHeight: 30
-        //Layout.fillHeight: true
-        /*
-        Rectangle {
-            color: "green"
-            opacity: 0.4
-            anchors.fill: parent
-        }*/
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 6
+
+        Image {
+            anchors.left: parent.left
+
+            source: "images/delete-button.svg"
+            sourceSize.width: 32
+            sourceSize.height: 32
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: toDoList.removeCompletedItems()
+            }
+        }
+
+        Text {
+            id: todoTitle
+            text: "Todo"
+            horizontalAlignment: Text.AlignHCenter
+            color: "white"
+            font.pointSize: 20
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+        }
+
+        Image {
+            anchors.right: parent.right
+            source: "images/add-button.svg"
+            sourceSize.width: 32
+            sourceSize.height: 32
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: toDoList.appendItem()
+            }
+        }
     }
-    //Frame {
+
     RowLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         ListView {
 
-            //implicitWidth: parent.width
-            //implicitHeight: 250
             anchors.fill: parent
             clip: true
             currentIndex: count-1
@@ -42,7 +66,6 @@ ColumnLayout {
 
             delegate: RowLayout {
                 id: rowL
-                //width: ListView.isCurrentItem ? parent.width: 200
                 width:parent.width
                 CheckBox {
                     checked: model.done
@@ -50,7 +73,6 @@ ColumnLayout {
                 }
 
                 TextField {
-                    id: ttt
                     text: model.description
                     color: "white"
 
@@ -61,50 +83,6 @@ ColumnLayout {
                     Layout.fillWidth: true
                 }
             }
-            /*
-            Rectangle {
-                color: "yellow"
-                opacity: 0.4
-                anchors.fill: parent
-            }
-            */
         }
-    }
-
-    RowLayout {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        Button {
-            text: qsTr("Add new item")
-            onClicked: toDoList.appendItem()
-
-            Layout.fillWidth: true
-
-            /*
-            Rectangle {
-                color: "blue"
-                opacity: 0.4
-                anchors.fill: parent
-            }
-            */
-        }
-        Button {
-            text: qsTr("Remove completed")
-            onClicked: toDoList.removeCompletedItems()
-            Layout.fillWidth: true
-           /*
-            Rectangle {
-                color: "red"
-                opacity: 0.4
-                anchors.fill: parent
-            }
-            */
-        }
-
-
-
-
-
-
     }
 }

@@ -274,8 +274,8 @@ Page {
     ///////////////////////
     Rectangle {
         id: topRightWidget
-        width: 800
-        height: 600
+        width: 500
+        height: 500
         color: "transparent"
         anchors.top: photoFrame.top
         anchors.left: photoFrame.right
@@ -290,4 +290,26 @@ Page {
             anchors.margins: 15
         }
     }
-} ///////////////////////// BOTTOM RIGHT WIDGET PART///////////////////////
+
+    ///////////////////////
+    // BOTTOM RIGHT WIDGET PART
+    ///////////////////////
+    Rectangle {
+        id: bottomRightWidget
+        width: 500
+        height: 500
+        color: "transparent"
+        anchors.top: topRightWidget.bottom
+        anchors.left: topRightWidget.left
+
+        //border.width: 1
+        //border.color: "grey"
+        property real margin: 5
+
+        ShoppingList {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: 15
+        }
+    }
+}

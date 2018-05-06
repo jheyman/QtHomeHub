@@ -15,7 +15,7 @@ void ImageProvider::setSource(HomeHubModel* ptr)
 
 QPixmap ImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    qDebug() << "requestPixmap: " << id << ", w=" <<requestedSize.width() << ", h=" << requestedSize.height();
+    //qDebug() << "requestPixmap: " << id << ", w=" <<requestedSize.width() << ", h=" << requestedSize.height();
 
     QPixmap ret_pixmap;
     int width;
@@ -45,7 +45,7 @@ QPixmap ImageProvider::requestPixmap(const QString &id, QSize *size, const QSize
     if (size)
         *size = QSize(width, height);
 
-    qDebug() << "ImageProvider: returning pixmap of width: " << ret_pixmap.width() << "and height:" << ret_pixmap.height();
+    //qDebug() << "ImageProvider: returning pixmap of width: " << ret_pixmap.width() << "and height:" << ret_pixmap.height();
 
     return ret_pixmap;
 }

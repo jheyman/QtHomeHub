@@ -16,7 +16,9 @@ SOURCES += main.cpp \
     homehubmodel.cpp \
     imageprovider.cpp \
     todomodel.cpp \
-    todolist.cpp
+    todolist.cpp \
+    shoppinglist.cpp \
+    shoppingmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,4 +41,6 @@ HEADERS += \
     homehubmodel.h \
     imageprovider.h \
     todomodel.h \
-    todolist.h
+    todolist.h \
+    shoppinglist.h \
+    shoppingmodel.h
