@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     todomodel.cpp \
     todolist.cpp \
     shoppinglist.cpp \
-    shoppingmodel.cpp
+    shoppingmodel.cpp \
+    graphbackend.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,4 +44,5 @@ HEADERS += \
     todomodel.h \
     todolist.h \
     shoppinglist.h \
-    shoppingmodel.h
+    shoppingmodel.h \
+    graphbackend.h

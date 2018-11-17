@@ -56,12 +56,14 @@ SOURCES       = ../QtHomeHub/main.cpp \
 		../QtHomeHub/todomodel.cpp \
 		../QtHomeHub/todolist.cpp \
 		../QtHomeHub/shoppinglist.cpp \
-		../QtHomeHub/shoppingmodel.cpp qrc_qml.cpp \
+		../QtHomeHub/shoppingmodel.cpp \
+		../QtHomeHub/graphbackend.cpp qrc_qml.cpp \
 		moc_homehubmodel.cpp \
 		moc_todomodel.cpp \
 		moc_todolist.cpp \
 		moc_shoppinglist.cpp \
-		moc_shoppingmodel.cpp
+		moc_shoppingmodel.cpp \
+		moc_graphbackend.cpp
 OBJECTS       = main.o \
 		homehubmodel.o \
 		imageprovider.o \
@@ -69,12 +71,14 @@ OBJECTS       = main.o \
 		todolist.o \
 		shoppinglist.o \
 		shoppingmodel.o \
+		graphbackend.o \
 		qrc_qml.o \
 		moc_homehubmodel.o \
 		moc_todomodel.o \
 		moc_todolist.o \
 		moc_shoppinglist.o \
-		moc_shoppingmodel.o
+		moc_shoppingmodel.o \
+		moc_graphbackend.o
 DIST          = /home/etabli/raspi/qt5/mkspecs/features/spec_pre.prf \
 		/home/etabli/raspi/qt5/mkspecs/common/unix.conf \
 		/home/etabli/raspi/qt5/mkspecs/common/linux.conf \
@@ -239,13 +243,15 @@ DIST          = /home/etabli/raspi/qt5/mkspecs/features/spec_pre.prf \
 		../QtHomeHub/todomodel.h \
 		../QtHomeHub/todolist.h \
 		../QtHomeHub/shoppinglist.h \
-		../QtHomeHub/shoppingmodel.h ../QtHomeHub/main.cpp \
+		../QtHomeHub/shoppingmodel.h \
+		../QtHomeHub/graphbackend.h ../QtHomeHub/main.cpp \
 		../QtHomeHub/homehubmodel.cpp \
 		../QtHomeHub/imageprovider.cpp \
 		../QtHomeHub/todomodel.cpp \
 		../QtHomeHub/todolist.cpp \
 		../QtHomeHub/shoppinglist.cpp \
-		../QtHomeHub/shoppingmodel.cpp
+		../QtHomeHub/shoppingmodel.cpp \
+		../QtHomeHub/graphbackend.cpp
 QMAKE_TARGET  = QtHomeHub
 DESTDIR       = 
 TARGET        = QtHomeHub
@@ -606,8 +612,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtHomeHub/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h ../QtHomeHub/todomodel.h ../QtHomeHub/todolist.h ../QtHomeHub/shoppinglist.h ../QtHomeHub/shoppingmodel.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp ../QtHomeHub/todomodel.cpp ../QtHomeHub/todolist.cpp ../QtHomeHub/shoppinglist.cpp ../QtHomeHub/shoppingmodel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/homehubmodel.h ../QtHomeHub/imageprovider.h ../QtHomeHub/todomodel.h ../QtHomeHub/todolist.h ../QtHomeHub/shoppinglist.h ../QtHomeHub/shoppingmodel.h ../QtHomeHub/graphbackend.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtHomeHub/main.cpp ../QtHomeHub/homehubmodel.cpp ../QtHomeHub/imageprovider.cpp ../QtHomeHub/todomodel.cpp ../QtHomeHub/todolist.cpp ../QtHomeHub/shoppinglist.cpp ../QtHomeHub/shoppingmodel.cpp ../QtHomeHub/graphbackend.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -922,9 +928,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp
 	/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++ -march=armv8-a -mtune=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard --sysroot=/home/etabli/raspi/sysroot -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /home/etabli/raspi/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp moc_shoppinglist.cpp moc_shoppingmodel.cpp
+compiler_moc_header_make_all: moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp moc_shoppinglist.cpp moc_shoppingmodel.cpp moc_graphbackend.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp moc_shoppinglist.cpp moc_shoppingmodel.cpp
+	-$(DEL_FILE) moc_homehubmodel.cpp moc_todomodel.cpp moc_todolist.cpp moc_shoppinglist.cpp moc_shoppingmodel.cpp moc_graphbackend.cpp
 moc_homehubmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
@@ -1382,6 +1388,81 @@ moc_shoppingmodel.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QAbstractListMode
 		moc_predefs.h \
 		/home/etabli/raspi/qt5/bin/moc
 	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/shoppingmodel.h -o moc_shoppingmodel.cpp
+
+moc_graphbackend.cpp: /home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/QQmlListProperty \
+		/home/etabli/raspi/qt5pi/include/QtQml/qqmllist.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/qtqmlglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/qtqml-config.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h \
+		../QtHomeHub/graphbackend.h \
+		moc_predefs.h \
+		/home/etabli/raspi/qt5/bin/moc
+	/home/etabli/raspi/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/etabli/raspi/qt5/mkspecs/devices/linux-rasp-pi3-g++ -I/home/etabli/julien.heyman@gmail.com/code/github/QtHomeHub/QtHomeHub -I/home/etabli/raspi/qt5pi/include -I/home/etabli/raspi/qt5pi/include/QtQuick -I/home/etabli/raspi/qt5pi/include/QtGui -I/home/etabli/raspi/qt5pi/include/QtQml -I/home/etabli/raspi/qt5pi/include/QtNetwork -I/home/etabli/raspi/qt5pi/include/QtCore -I. -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3 -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/arm-linux-gnueabihf -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include/c++/4.8.3/backward -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/lib/gcc/arm-linux-gnueabihf/4.8.3/include-fixed -I/home/etabli/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/include -I/home/etabli/raspi/sysroot/usr/include -I/home/etabli/raspi/sysroot/usr/include/arm-linux-gnueabihf ../QtHomeHub/graphbackend.h -o moc_graphbackend.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -2258,6 +2339,79 @@ shoppingmodel.o: ../QtHomeHub/shoppingmodel.cpp ../QtHomeHub/shoppingmodel.h \
 		/home/etabli/raspi/qt5pi/include/QtCore/QMetaType
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shoppingmodel.o ../QtHomeHub/shoppingmodel.cpp
 
+graphbackend.o: ../QtHomeHub/graphbackend.cpp ../QtHomeHub/graphbackend.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/QObject \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnamespace.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig-bootstrapped.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qconfig.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtcore-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsystemdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qprocessordetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcompilerdetection.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtypeinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsysinfo.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlogging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qflags.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbasicatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_bootstrap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qgenericatomic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_cxx11.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qatomic_msvc.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qglobalstatic.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmutex.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qnumeric.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qversiontagging.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobjectdefs_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstring.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qchar.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qrefcount.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qarraydata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringliteral.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringview.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringbuilder.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qalgorithms.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiterator.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhashfunctions.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpair.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qbytearraylist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringlist.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qregexp.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qstringmatcher.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcoreevent.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qscopedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmetatype.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvarlengtharray.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontainerfwd.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qobject_impl.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/QQmlListProperty \
+		/home/etabli/raspi/qt5pi/include/QtQml/qqmllist.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/qtqmlglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtQml/qtqml-config.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetworkglobal.h \
+		/home/etabli/raspi/qt5pi/include/QtNetwork/qtnetwork-config.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvariant.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qmap.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qdebug.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qhash.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qtextstream.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qiodevice.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qlocale.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qshareddata.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qvector.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qpoint.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qset.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qcontiguouscache.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer.h \
+		/home/etabli/raspi/qt5pi/include/QtCore/qsharedpointer_impl.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o graphbackend.o ../QtHomeHub/graphbackend.cpp
+
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
 
@@ -2275,6 +2429,9 @@ moc_shoppinglist.o: moc_shoppinglist.cpp
 
 moc_shoppingmodel.o: moc_shoppingmodel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_shoppingmodel.o moc_shoppingmodel.cpp
+
+moc_graphbackend.o: moc_graphbackend.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_graphbackend.o moc_graphbackend.cpp
 
 ####### Install
 

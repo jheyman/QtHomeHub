@@ -273,7 +273,7 @@ Page {
     // TOP RIGHT WIDGET PART
     ///////////////////////
     Rectangle {
-        id: topRightWidget
+        id: todoListWidget
         width: 500
         height: 500
         color: "transparent"
@@ -295,12 +295,12 @@ Page {
     // BOTTOM RIGHT WIDGET PART
     ///////////////////////
     Rectangle {
-        id: bottomRightWidget
+        id: shoppingListWidget
         width: 500
         height: 500
         color: "transparent"
-        anchors.top: topRightWidget.bottom
-        anchors.left: topRightWidget.left
+        anchors.top: todoListWidget.bottom
+        anchors.left: todoListWidget.left
 
         //border.width: 1
         //border.color: "grey"
@@ -312,4 +312,71 @@ Page {
             anchors.margins: 15
         }
     }
+
+
+    /////////////////////////
+    // GRAPH WIDGET PART
+    /////////////////////////
+    Rectangle {
+        id: graphFrame
+        width: 500
+        height: 200
+        //color: "transparent"
+        color: "red"
+
+        anchors.top: todoListWidget.top
+        anchors.left: todoListWidget.right
+
+        property real margin: 5
+
+        // Use Canvas to draw custom corners with lines
+        Canvas {
+            id: graphCanvas
+            anchors.centerIn: parent
+            anchors.fill: parent
+            width: parent.width
+            anchors.margins: parent.margin
+            //anchors.margins: 0
+            property real corner_margin: 8
+            property real corner_length: 25
+
+            onPaint: {
+                var context = getContext("2d")
+
+                // clear canvas
+                context.reset()
+
+                // Render image pathname text
+                /*
+                context.fillStyle = "white"
+                context.font = "12px sans-serif"
+                context.fillText(
+                            photoPathName,
+                            image.imageStartX + image.paintedWidth / 2 - context.measureText(
+                                photoPathName).width / 2,
+                            image.imageStartY - corner_margin - 8)
+                context.stroke()
+                */
+
+                // Draw corners around image
+                context.beginPath()
+                context.lineWidth = 2
+
+                context.strokeStyle = "white"
+
+                // top-left corner
+                /*
+                context.moveTo(image.imageStartX - corner_margin,
+                               image.imageStartY - corner_margin)
+                context.lineTo(
+                            image.imageStartX - corner_margin + corner_length,
+                            image.imageStartY - corner_margin)
+
+                 context.stroke()
+                */
+            }
+        }
+    }
+
+
 }
